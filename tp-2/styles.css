@@ -64,5 +64,5 @@ a:not([href]) {
     color: #111;
 }
 .movies-list li:nth-of-type(even) {
-    color: #333;
+    background-color: #333;
 }
