@@ -284,7 +284,15 @@ console.log("contarAprobados([10, 4, 6, 7, 1, 9]): ", contarAprobados([10, 4, 6,
  * - filtrarSoloTruthy(["Hola", "", 0, 1]) retorna ["Hola", 1]
  */
 function filtrarSoloTruthy(listaDeValores) {
-    
+    let listaTruthy = [];
+
+    for (let i = 0; i < listaDeValores.length; i++) {
+        if (listaDeValores[i]) {
+            listaTruthy.push(listaDeValores[i]);
+        }
+    }
+
+    return listaTruthy;
 }
 console.log("filtrarSoloTruthy(): ", filtrarSoloTruthy(["Hola", "", null, 1, 0, -1, undefined, [], {}]))
 
