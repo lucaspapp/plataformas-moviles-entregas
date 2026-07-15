@@ -309,6 +309,19 @@ console.log("filtrarSoloTruthy(): ", filtrarSoloTruthy(["Hola", "", null, 1, 0, 
  * - enumerarLista(["Han", "Leia", "Luke", "Yoda"]) "Han, Leia, Luke y Yoda."
  */
 function enumerarLista(listaDePalabras) {
-    //
+    let oracion = "";
+
+    for (let i = 0; i < listaDePalabras.length; i++) {
+
+        if (i === listaDePalabras.length - 1) {
+            oracion += " y " + listaDePalabras[i];
+        } else if (i === 0) {
+            oracion += listaDePalabras[i];
+        } else {
+            oracion += ", " + listaDePalabras[i];
+        }
+    }
+
+    return oracion + ".";
 }
 console.log("enumerarLista(): ", enumerarLista(["Han", "Leia", "Luke", "Yoda"]))
