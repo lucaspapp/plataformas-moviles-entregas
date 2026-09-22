@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tablero de Puntos - DOM y JavaScript</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container my-1 my-sm-2 my-md-4 my-lg-5">
+    	<h1>Tablero de Puntos</h1>
+        <div class="card">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-5">
+                        <span class="display-1" id="displayLocal">0</span>
+                        <p class="m-0" id="nombreLocal">Local</p>
+                    </div>
+                    <div class="col-2">
+                        <span class="display-1">:</span>
+                    </div>
+                    <div class="col-5">
+                        <span class="display-1" id="displayVisitante">0</span>
+                        <p class="m-0" id="nombreVisitante">Visitante</p>
+                    </div>
+                </div>
+
+                <hr class="hr">
+
+                <h2>Actualizar Contador</h2>
+                <div class="row">
+                    <div class="col-12 col-sm-4 my-1">
+                        <button class="btn d-block w-100 btn-primary" id="btnLocal">
+                            Punto Local
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-4 my-1">
+                        <button class="btn d-block w-100 btn-primary" id="btnVisitante">
+                            Punto Visitante
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-4 my-1">
+                        <button class="btn d-block w-100 btn-danger" id="btnReinicio">
+                            Reinicio
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-4 my-1">
+                        <button class="btn d-block w-100 btn-warning" id="btnInvertir">
+                            Invertir Puntaje
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-4 my-1">
+                        <button class="btn d-block w-100 btn-success" id="btnFin">
+                            Finalizar
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-4 my-1">
+                        <label for="colorFondo" class="form-label">Color de fondo</label>
+                        <input type="color" class="form-control form-control-color w-100" id="colorFondo" value="#ffffff">
+                    </div>
+
+                    <div class="col-12 col-sm-4 my-1">
+                        <label for="colorLocal" class="form-label">Color Local</label>
+                        <input type="color" class="form-control form-control-color w-100" id="colorLocal" value="#0000ff">
+                    </div>
+
+                    <div class="col-12 col-sm-4 my-1">
+                        <label for="colorVisitante" class="form-label">Color Visitante</label>
+                        <input type="color" class="form-control form-control-color w-100" id="colorVisitante" value="#ff0000">
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="mt-4">
+            <h3>Atajos de teclado</h3>
+            <ul>
+                <li><strong>+</strong> → Sumar punto Local</li>
+                <li><strong>-</strong> → Restar punto Local</li>
+                <li><strong>*</strong> → Sumar punto Visitante</li>
+                <li><strong>/</strong> → Restar punto Visitante</li>
+                <li><strong>R</strong> → Reiniciar</li>
+                <li><strong>F</strong> → Finalizar</li>
+            </ul>
+        </div>
+            </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script>
+        let btnLocal = document.getElementById('btnLocal');
+        let btnVisitante = document.getElementById('btnVisitante');
+        let btnReinicio = document.getElementById('btnReinicio');
+        let btnInvertir = document.getElementById('btnInvertir');
+        let btnFin = document.getElementById('btnFin');
+
+        let displayLocal = document.getElementById('displayLocal');
+        let displayVisitante = document.getElementById('displayVisitante');
+
+        let nombreLocal = document.getElementById('nombreLocal');
+        nombreLocal.style.cursor = 'pointer';
+        let nombreVisitante = document.getElementById('nombreVisitante');
+        nombreVisitante.style.cursor = 'pointer';
+
+        let contLocal = 0;
+        let contVisitante = 0;
+
+        btnLocal.addEventListener('click', () => {
+            contLocal++;
+            mostrarContador();
+        });
+
+        btnVisitante.addEventListener('click', () => {
+            contVisitante++;
+            mostrarContador();
+        });
+
+        btnReinicio.addEventListener('click', () => {
+            contLocal = 0;
+            contVisitante = 0;
+            mostrarContador();
+
+            btnLocal.disabled = false;
+            btnVisitante.disabled = false;
+            btnInvertir.disabled = false;
+            btnFin.disabled = false;
+        });
+
+
+        btnInvertir.addEventListener('click', () => {
+            let a = contLocal;
+            contLocal = contVisitante;
+            contVisitante = a;
+            mostrarContador();
+        })
+
+        btnFin.addEventListener('click', () => {
+            btnLocal.disabled = true;
+            btnVisitante.disabled = true;
+            btnInvertir.disabled = true;
+            btnFin.disabled = true;
+        });
+
+        nombreLocal.addEventListener('click', () => {
+            nuevoNombre = prompt("Ingrese el nombre del equipo");
+            if(nuevoNombre !== null && nuevoNombre.trim() !== ''){
+                nombreLocal.textContent = nuevoNombre;
+            }
+            mostrarContador();
+        });
+
+        nombreVisitante.addEventListener('click', () => {
+            nuevoNombre = prompt("Ingrese el nombre del equipo");
+            if(nuevoNombre !== null && nuevoNombre.trim() !== ''){
+                nombreVisitante.textContent = nuevoNombre;
+            }
+            mostrarContador();
+        });
+
+        function mostrarContador() {
+            displayLocal.textContent = contLocal;
+            displayVisitante.textContent = contVisitante;
+
+        }
+
+        mostrarContador();
+
+        let colorFondo = document.getElementById('colorFondo');
+        let colorLocal = document.getElementById('colorLocal');
+        let colorVisitante = document.getElementById('colorVisitante');
+
+        colorFondo.addEventListener('input', () => {
+            document.body.style.backgroundColor = colorFondo.value;
+        });
+
+        colorLocal.addEventListener('input', () => {
+            displayLocal.style.color = colorLocal.value;
+            nombreLocal.style.color = colorLocal.value;
+        });
+
+        colorVisitante.addEventListener('input', () => {
+            displayVisitante.style.color = colorVisitante.value;
+            nombreVisitante.style.color = colorVisitante.value;
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '+') {
+                if (!btnLocal.disabled) {
+                    contLocal++;
+                    mostrarContador();
+                }
+            }
+
+            if (event.key === '-') {
+                if (!btnLocal.disabled && contLocal > 0) {
+                    contLocal--;
+                    mostrarContador();
+                }
+            }
+
+            if (event.key === '*') {
+                if (!btnVisitante.disabled) {
+                    contVisitante++;
+                    mostrarContador();
+                }
+            }
+
+            if (event.key === '/') {
+                if (!btnVisitante.disabled && contVisitante > 0) {
+                    contVisitante--;
+                    mostrarContador();
+                }
+            }
+
+            if (event.key === 'r' || event.key === 'R') {
+                btnReinicio.click();
+            }
+
+            if (event.key === 'f' || event.key === 'F') {
+                btnFin.click();
+            }
+
+        });
+
+
+    </script>
+
+</body>
+</html>
