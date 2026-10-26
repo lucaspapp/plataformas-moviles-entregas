@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PokéDex — Explora Kanto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="bg-danger">
+      <nav class="navbar">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-white" href="#" aria-label="PokéDex, inicio">
+            <svg width="36" height="36" viewBox="0 0 48 48" role="img" aria-label="Poké Ball">
+              <circle cx="24" cy="24" r="20" fill="#dc3545" stroke="#fff" stroke-width="4"/>
+              <path d="M5 24h38a19 19 0 0 0-38 0Z" fill="#fff"/>
+              <path d="M4 24h40" stroke="#fff" stroke-width="4"/>
+              <circle cx="24" cy="24" r="7" fill="#fff" stroke="#dc3545" stroke-width="4"/>
+            </svg>
+            PokéDex
+          </a>
+          <span class="text-white-50 fw-semibold">Tu guía de Kanto</span>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="position-relative overflow-hidden bg-danger text-white">
+        <div class="container position-relative py-5">
+          <p class="fw-bold text-uppercase">¡Hazte con todos!</p>
+          <h1 class="display-3 fw-bold">Tu aventura Pokémon<br>empieza aquí.</h1>
+          <p class="lead">Explora, descubre y conoce a tus Pokémon favoritos.</p>
+          <a class="btn btn-light text-danger fw-semibold" href="#pokedex">Ver la Pokédex ↓</a>
+          <svg class="position-absolute top-0 end-0 opacity-25 me-4 mt-4 d-none d-sm-block" width="220" height="220" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="82" fill="none" stroke="currentColor" stroke-width="18"/>
+            <path d="M18 100h164" stroke="currentColor" stroke-width="18"/>
+            <circle cx="100" cy="100" r="25" fill="currentColor"/>
+          </svg>
+        </div>
+      </section>
+
+      <section class="container py-5" id="pokedex" aria-labelledby="pokedex-title">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-between gap-3 mb-4">
+          <div>
+            <p class="mb-1 fw-bold text-danger text-uppercase">La región de Kanto</p>
+            <h2 class="mb-0 fw-bold" id="pokedex-title">
+              Pokédex <span class="fs-6 fw-normal text-secondary" id="pokemon-count">151 Pokémon</span>
+            </h2>
+          </div>
+          <div class="col-12 col-sm-4">
+            <div class="input-group">
+              <span class="input-group-text bg-white" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+                  <circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/>
+                </svg>
+              </span>
+              <label class="visually-hidden" for="search-input">Buscar Pokémon por nombre</label>
+              <input class="form-control" id="search-input" type="search" placeholder="Buscar Pokémon..." autocomplete="off">
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger d-none" id="error-message" role="alert"></div>
+        <p class="text-center text-secondary py-5 d-none" id="empty-state">No encontramos Pokémon con ese nombre. Intenta otra búsqueda.</p>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 g-3" id="pokemon-grid" aria-live="polite"></div>
+
+        <div class="d-none justify-content-center align-items-center gap-2 py-5 text-secondary" id="loading-state" role="status" aria-live="polite">
+          <span class="spinner-border spinner-border-sm text-danger" aria-hidden="true"></span>
+          <span>Cargando Pokémon...</span>
+        </div>
+        <div class="text-center pt-4">
+          <button class="btn btn-outline-danger fw-semibold d-none" id="load-more-button" type="button">Cargar más Pokémon ↓</button>
+          <p class="text-secondary d-none" id="end-message">¡Ya descubriste todos los Pokémon disponibles!</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-dark text-white py-3">
+      <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+        <a class="text-white fw-bold text-decoration-none" href="#">PokéDex</a>
+        <p class="mb-0 text-white-50 small">Datos proporcionados por <a class="text-white" href="https://pokeapi.co/" target="_blank" rel="noreferrer">PokéAPI</a></p>
+      </div>
+    </footer>
+
+    <div class="modal fade" id="pokemon-modal" tabindex="-1" aria-labelledby="modal-pokemon-name" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h2 class="modal-title fs-5 fw-bold text-capitalize" id="modal-pokemon-name"></h2>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body text-center pt-0">
+            <div class="d-none" id="modal-content">
+              <div class="bg-danger-subtle rounded-4 mb-3">
+                <img class="img-fluid object-fit-contain" id="modal-image" width="180" height="180" alt="">
+              </div>
+              <p class="small text-secondary fw-semibold" id="modal-number"></p>
+              <div class="d-flex flex-wrap justify-content-center gap-2 mb-4" id="modal-types"></div>
+              <div class="row row-cols-2 g-3 text-start">
+                <section>
+                  <h3 class="h6 fw-bold">Habilidades</h3>
+                  <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0" id="modal-abilities"></ul>
+                </section>
+                <section>
+                  <h3 class="h6 fw-bold">Movimientos</h3>
+                  <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0" id="modal-moves"></ul>
+                </section>
+              </div>
+            </div>
+            <div class="d-none justify-content-center align-items-center gap-2 py-5 text-secondary" id="modal-loading" role="status">
+              <span class="spinner-border spinner-border-sm text-danger" aria-hidden="true"></span>
+              <span>Cargando información...</span>
+            </div>
+            <div class="alert alert-danger d-none mt-3 mb-0" id="modal-error" role="alert"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
