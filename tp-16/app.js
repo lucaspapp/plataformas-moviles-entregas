@@ -9,6 +9,7 @@ async function obtenerListaPokemon() {
   }
 
   const datos = await respuesta.json();
+  console.log("Datos de PokeAPI:", datos);
 
   return datos.results.map((pokemon, indice) => ({
     id: indice + 1,
@@ -57,19 +58,29 @@ async function cargarPokemones() {
   try {
     const listaPokemon = await obtenerListaPokemon();
 
+    if (!contenedorPokemon) {
+      throw new Error("No se encontró el contenedor #lista-pokemones");
+    }
+
+    contenedorPokemon.innerHTML = "";
+
     listaPokemon.forEach((pokemon) => {
       const tarjeta = crearTarjetaPokemon(pokemon);
       contenedorPokemon.appendChild(tarjeta);
     });
   } catch (error) {
-    contenedorPokemon.innerHTML = `
-      <div class="col-12">
-        <div class="alert alert-danger" role="alert">
-          ${error.message}
+    console.error(error);
+
+    if (contenedorPokemon) {
+      contenedorPokemon.innerHTML = `
+        <div class="col-12">
+          <div class="alert alert-danger" role="alert">
+            ${error.message}
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 }
 
-cargarPokemones();
+document.addEventListener("DOMContentLoaded", cargarPokemones);
